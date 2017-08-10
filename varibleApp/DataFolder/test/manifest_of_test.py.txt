@@ -2,10 +2,6 @@ a
 	Field Name : A
 	Requirement Status : (0, ['A'])
 	Help Text : Number One.
-h
-	Field Name : 
-	Requirement Status : (0, [''])
-	Help Text : show this help message and exit
 b
 	Field Name : B
 	Requirement Status : (0, ['B'])

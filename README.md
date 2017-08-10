@@ -1,8 +1,21 @@
-Everything is functioning perfectly. I am going to delete unused code and comment everything now... Then I will start working on the actual webapp. (7/18/17)
+8/10/17:
+To use the program:
+create a script that can take either a dict or command line as inputs
 
-Update for 8/7/17: IT IS RUNNING THE PROGRAM...
-LIFE IS GREAT
-to get it to run launch the server and go to 127.0.0.1:8000/app/interface/
-Then it will load the blank page.
-You then can press "Run" and it will change the url at the top for your inputs (currently these have no effect).
-After that you can see the output of help text from the program running! (Warning: this takes about 15 seconds to load the page because it has to run the program)
+run utilityCompiler.py -f _(your file name)_.py -m
+
+take the manifest file and the script and put it in a folder named the same as the script with a blank __init__.py file.
+
+place that folder in varibleApp/DataFolder
+
+run the server
+
+go to /app/(your file name)
+
+choose your inputs
+
+profit?
+
+example: test.py that is currently in DataFolder
+
+I will work on it being less tedious and more automatic

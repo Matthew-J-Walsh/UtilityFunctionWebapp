@@ -41,31 +41,26 @@ def runapp(request, func):
     #return HttpResponse("Running Application: " + function_name + " Pulling from: " + folder + " Computing file: " + filename + " Manifest contains: " + data_contents)
     requestInputs = dict(request.GET.lists())
     #calculate inputs
-    form = []
-    dashes = 0
+    form = {}
     for imp in requestInputs.keys():
-        dashes = data_contents[imp]["Dashes"]
         field = imp
-        while(dashes>0):
-            field = "-" + field
-            dashes -= 1
         value = requestInputs[imp][0]
-        form = form + [field] + [value]
+        form.update({field: value})
 
     run_from = "unknown"
     output = "Run Me!"
     print("running: " + str(mod) + "with inputs: "+str(form))
-    try:
-        output = mod.main(form)
+    #try:
+    output = mod.main(form)
         #output = str(mod.add(1, 2))
-    except:
-        output = "ERROR"
+    #except:
+    #    output = "ERROR"
     try:
         try_dict = UnFold(filename)
         data_contents = try_dict
     except:
         try_dict = {"failed:": filename}
-    return render(request, 'VaribleApplication/pagestructure.html', {"data_contents": data_contents, "inputs": requestInputs, "runpoint": run_from, "output": output, "function_name": function_name})
+    return render(request, 'VaribleApplication/pagestructure.html', {"form": form, "data_contents": data_contents, "inputs": requestInputs, "runpoint": run_from, "output": output, "function_name": function_name})
 
 # input: Filename
 # output: Dictionary from file
