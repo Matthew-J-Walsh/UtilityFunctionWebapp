@@ -70,10 +70,12 @@ def output(simularities, args):
     if args['dict']:
         return outdict
 
+def add(a, b):
+    return a + b
 
 if __name__ == '__main__':
     try:
         import sys
-        main(sys.args[1:])
+        main(sys.argv[1:])
     except:
         print("ERROR")

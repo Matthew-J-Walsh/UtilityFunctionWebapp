@@ -32,12 +32,34 @@ def runapp(request, func):
     imp_loc = "DataFolder." + function_name + "." + function_name
     mod = importlib.import_module(imp_loc)
 
+    #load manifest
+    try:
+        data_contents = UnFold(filename)
+    except:
+        data_contents = {"failed:": filename}
+
     #return HttpResponse("Running Application: " + function_name + " Pulling from: " + folder + " Computing file: " + filename + " Manifest contains: " + data_contents)
     requestInputs = dict(request.GET.lists())
+    #calculate inputs
+    form = []
+    dashes = 0
+    for imp in requestInputs.keys():
+        dashes = data_contents[imp]["Dashes"]
+        field = imp
+        while(dashes>0):
+            field = "-" + field
+            dashes -= 1
+        value = requestInputs[imp][0]
+        form = form + [field] + [value]
+
     run_from = "unknown"
     output = "Run Me!"
-    print("running: " + str(mod) + "with inputs: "+str(requestInputs.values()))
-    mod.main(['testing' , 'some', 'interesting', 'stuff', 'out', 'so watch me', 'whip'])
+    print("running: " + str(mod) + "with inputs: "+str(form))
+    try:
+        output = mod.main(form)
+        #output = str(mod.add(1, 2))
+    except:
+        output = "ERROR"
     try:
         try_dict = UnFold(filename)
         data_contents = try_dict
