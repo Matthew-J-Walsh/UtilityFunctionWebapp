@@ -83,10 +83,10 @@ def ParseDoc(resultant, input):
 # Places a dictionary into a .txt file in a reasonable manner
 # The file produced by this can be edited by the user, adding links or removing them where wanted
 # additional functionality will be added in the UnFold part to support initial values where possible, since this program cannot pick up if there are initial values
-def Fold(dict, args):
+def Fold(dict, pyfile):
     #format: dict of fields that each are dicts with {Field Name, Reqiurement Status, Help Text}
     print("Starting Fold. \n")
-    text_file = open("manifest_of_%s.txt" % args.pyfile, 'w')
+    text_file = open("manifest_of_%s.txt" % pyfile, 'w')
     for e in dict.keys():
         #write the field
         text_file.write(e + "\n")
@@ -95,7 +95,7 @@ def Fold(dict, args):
             text_file.write("\t" + a + " : " + str(dict[e][a]) + "\n")
     text_file.close()
     print("Finished Folding. \n")
-    return "manifest_of_%s.txt" % args.pyfile
+    return "manifest_of_%s.txt" % pyfile
 
 # input: Filename
 # output: Dictionary from file
@@ -180,10 +180,10 @@ def main():
         help = Parse(stri)
     if (args.manifest):
         # folds the dict up into a text document
-        print(Fold(help, args))
+        print(Fold(help, args.pyfile))
     elif (args.extract):
         # this part here (the UnFold) would not be in the final program, it would be moved into the webapp so that the webapp could parse out the dict.
-        recomped = UnFold(filenamef)
+        recomped = UnFold(storagefilename)
     else: #args.print
         print(help)
     print("Process Complete. \n")
