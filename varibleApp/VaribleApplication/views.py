@@ -50,11 +50,11 @@ def runapp(request, func):
     run_from = "unknown"
     output = "Run Me!"
     print("running: " + str(mod) + "with inputs: "+str(form))
-    #try:
-    output = mod.main(form)
+    try:
+        output = mod.main(form)
         #output = str(mod.add(1, 2))
-    #except:
-    #    output = "ERROR"
+    except:
+        output = "ERROR"
     try:
         try_dict = UnFold(filename)
         data_contents = try_dict

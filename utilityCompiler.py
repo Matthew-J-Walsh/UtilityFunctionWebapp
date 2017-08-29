@@ -2,6 +2,8 @@
 import subprocess as sp
 import argparse
 import re
+import os
+import shutil as sh
 
 # input: string of help result to do an initial pass on
 # output: dict of valuable display parts
@@ -83,10 +85,12 @@ def ParseDoc(resultant, input):
 # Places a dictionary into a .txt file in a reasonable manner
 # The file produced by this can be edited by the user, adding links or removing them where wanted
 # additional functionality will be added in the UnFold part to support initial values where possible, since this program cannot pick up if there are initial values
-def Fold(dict, pyfile):
+def Fold(dict, pyfile, dest):
     #format: dict of fields that each are dicts with {Field Name, Reqiurement Status, Help Text}
     print("Starting Fold. \n")
-    text_file = open("manifest_of_%s.txt" % pyfile, 'w')
+    #open the file
+    text_file = open(dest+"/manifest_of_%s.txt" % pyfile, 'w')
+    #put the information in the file
     for e in dict.keys():
         #write the field
         text_file.write(e + "\n")
@@ -94,6 +98,8 @@ def Fold(dict, pyfile):
             #write one of the dicts as an output every line
             text_file.write("\t" + a + " : " + str(dict[e][a]) + "\n")
     text_file.close()
+    #copy the program into the folder too
+    sh.copyfile(str(os.curdir) + pyfile, dest + pyfile + ".py")#check on me later
     print("Finished Folding. \n")
     return "manifest_of_%s.txt" % pyfile
 
@@ -158,13 +164,15 @@ def maketuple(string):
 # parses the parameters of the function
 def params():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--pyfile", "-f", help=""" The python program you would like to make a manifest of """,
+    parser.add_argument("--pyfile", "-f", help=""" The python program you would like to make a manifest of. """,
                         required=True)
-    # these next three should be mutually exclusive
+    parser.add_argument("--destination", "-d", help=""" The Destination to which this program and the manifest should be loaded. """, default=os.curdir)
+
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--manifest", "-m", help=""" Use if you want to make a manifest of the program. """)
     group.add_argument("--extract", "-e", help=""" Use if you want to extract the manifest of the program. """)
     group.add_argument("--print", "-p", help=""" Use if you only want to print the produced output. """)
+
     args = parser.parse_args()
     return args
 
@@ -180,7 +188,7 @@ def main():
         help = Parse(stri)
     if (args.manifest):
         # folds the dict up into a text document
-        print(Fold(help, args.pyfile))
+        print(Fold(help, args.pyfile, args.destination))
     elif (args.extract):
         # this part here (the UnFold) would not be in the final program, it would be moved into the webapp so that the webapp could parse out the dict.
         recomped = UnFold(storagefilename)
